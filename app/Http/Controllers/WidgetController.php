@@ -14,6 +14,22 @@ class WidgetController extends Controller
      * @return JsonResponse
      * @throws ValidationException
      */
+    public function createWidgetOrder(Request $request): JsonResponse
+    {
+        $this->validate($request, [
+            'amount' => 'required|numeric|min:1'
+        ]);
+        $packs = WidgetPackSize::getPacksForAmount($request->amount);
+        return response()->json([
+            'packs' => $packs,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ValidationException
+     */
     public function saveWidgetPackSize(Request $request): JsonResponse
     {
         $this->validate($request, [
