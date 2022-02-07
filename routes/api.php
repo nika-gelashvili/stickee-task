@@ -18,6 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/createWidgetOrder', 'WidgetController@createWidgetOrder');
 Route::post('/saveWidgetPackSize', 'WidgetController@saveWidgetPackSize');
 Route::post('/updateWidgetPackSize', 'WidgetController@updateWidgetPackSize');
 Route::post('/deleteWidgetPackSize', 'WidgetController@deleteWidgetPackSize');
