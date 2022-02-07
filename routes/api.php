@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/saveWidgetPackSize', 'WidgetController@saveWidgetPackSize');
+Route::post('/updateWidgetPackSize', 'WidgetController@updateWidgetPackSize');
+Route::post('/deleteWidgetPackSize', 'WidgetController@deleteWidgetPackSize');
+Route::get('/getWidgetPackSizesData', 'WidgetController@getWidgetPackSizesData');
