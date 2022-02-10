@@ -42,12 +42,13 @@ class WidgetPackSize extends Model
     /**
      * Receives amount as parameter and returns array with keys as pack sizes and values as pack amounts
      *
-     * Function cycles until amount parameter is less than or equals zero
-     * and on each cycle another cycling is done on widget pack sizes
-     * and amount and widget pack size is compared until one of two checks are passed:
-     * amount is larger number than one of pack sizes or is less than the smallest pack size
-     * on both checks' widget pack size is subtracted and pack used is saved into array,
-     * inner cycle breaks to make sure all large packs are used prior to smaller ones.
+     * Function cycles on pack sizes and on each step amount is divided by pack size and floored result is used as count
+     * for amount of packs required, then amount is set to modulo division of amount and widget pack size.
+     * then check is made to make sure that if amount is less than the smallest pack, pack is still counted to be used.
+     * After this one more cycle is used to check if sum of pack sizes multiplied by amount after
+     * current index in $transformedPackSizes is less than current index to
+     * make sure that minimum amount of packs is used values of pack sizes after current index is set to 0 as according
+     * to logic only if amount is larger than sum of smaller packs and smaller than larger pack this logic is needed.
      *
      * @param $amount
      * @return array
