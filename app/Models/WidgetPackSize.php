@@ -59,22 +59,28 @@ class WidgetPackSize extends Model
         $transformedPackSizes = self::transformPackSizesArray($widgetPackSizes);
 
         $minSizePack = $widgetPackSizes[count($widgetPackSizes) - 1];
-
         if ($amount < $minSizePack) {
             $transformedPackSizes[$minSizePack] += 1;
         } else {
-            while ($amount > 0) {
-                foreach ($widgetPackSizes as $widgetPackSize) {
-                    if ($amount >= $widgetPackSize) {
-                        $amount -= $widgetPackSize;
-                        $transformedPackSizes[$widgetPackSize] += 1;
-                        break;
-                    } else {
-                        if ($amount < $minSizePack) {
-                            $amount -= $widgetPackSize;
-                            $transformedPackSizes[$minSizePack] += 1;
-                            break;
-                        }
+            foreach ($widgetPackSizes as $widgetPackSize) {
+                $transformedPackSizes[$widgetPackSize] = (int)floor($amount / $widgetPackSize);
+                $amount = $amount % $widgetPackSize;
+                if ($amount && $amount < $minSizePack) {
+                    $transformedPackSizes[$minSizePack] += 1;
+                }
+            }
+
+            for ($i = 0; $i < count($transformedPackSizes); $i++) {
+                $sum = 0;
+                $keysToNullify = [];
+                for ($j=$i+1; $j < count($transformedPackSizes); $j++) {
+                    $sum += $widgetPackSizes[$j] * $transformedPackSizes[$widgetPackSizes[$j]];
+                    $keysToNullify[] = $widgetPackSizes[$j];
+                }
+                if ($sum >= $widgetPackSizes[$i]) {
+                    $transformedPackSizes[$widgetPackSizes[$i]] += 1;
+                    foreach ($keysToNullify as $value) {
+                        $transformedPackSizes[$value] = 0;
                     }
                 }
             }
